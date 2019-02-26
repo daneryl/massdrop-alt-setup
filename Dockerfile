@@ -22,10 +22,9 @@ RUN apt-get update && \
 
 RUN cd / && \
     git clone https://github.com/qmk/qmk_firmware.git && \
-    mkdir -p qmk_firmware/keyboards/ergodox_ez/keymaps/agupta && \
+    mkdir -p qmk_firmware/keyboards/massdrop/alt/keymaps/daneryl && \
 		cd /qmk_firmware && \
 		make git-submodule
 
 WORKDIR /qmk_firmware
-CMD make ergodox_ez:agupta && \
-		cp ergodox_ez_agupta.hex keyboards/ergodox_ez/keymaps/agupta
+CMD make massdrop/alt:daneryl 
