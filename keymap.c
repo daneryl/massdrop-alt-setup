@@ -20,11 +20,18 @@ enum alt_keycodes {
     DBG_KBD,            //DEBUG Toggle Keyboard Prints
     DBG_MOU,            //DEBUG Toggle Mouse Prints
     MD_BOOT,            //Restart into bootloader after hold timeout
+    //
     TMUX_SESSIONS,
     TMUX_LEFT,
     TMUX_RIGHT,
     TMUX_UP,
     TMUX_DOWN,
+    TMUX_DETACH,
+    TMUX_COPY_MODE,
+    TMUX_ZOOM,
+    TMUX_HSPLIT,
+    TMUX_VSPLIT,
+    TMUX_KILL_PANE,
 };
 
 #define TG_NKRO MAGIC_TOGGLE_NKRO //Toggle 6KRO / NKRO mode
@@ -49,11 +56,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     
     // tmux layout ?
     [2] = LAYOUT(
-        KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_TRNS, TMUX_SESSIONS,    KC_TRNS, KC_TRNS, KC_TRNS, TMUX_LEFT,   TMUX_DOWN,    TMUX_UP,      TMUX_RIGHT,     KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_ESC,  KC_TRNS,                                     KC_TRNS,                                                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
+        KC_TRNS,        KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, TMUX_HSPLIT,   TMUX_VSPLIT, KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+        KC_TRNS,        KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, KC_TRNS,       KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+        KC_TRNS,        KC_TRNS,    TMUX_SESSIONS,    TMUX_DETACH,    KC_TRNS, KC_TRNS,       TMUX_LEFT,   TMUX_DOWN,    TMUX_UP,      TMUX_RIGHT,     KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
+        KC_TRNS,        TMUX_ZOOM,  TMUX_KILL_PANE,   TMUX_COPY_MODE, KC_TRNS, KC_TRNS,       KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
+        KC_TRNS,        KC_ESC,     KC_TRNS,                                                  KC_TRNS,                                                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
     ),
    
     /*
@@ -197,32 +204,70 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return false;
+
+        case TMUX_KILL_PANE:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b")"x");
+            }
+            return false;
+
         case TMUX_SESSIONS:
             if (record->event.pressed) {
-              SEND_STRING(SS_LCTRL("a")"s");
-              /* SEND_STRING("test"); */
+              SEND_STRING(SS_LCTRL("b")"s");
             }
             return false;
+
+        case TMUX_VSPLIT:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b")"\"");
+            }
+            return false;
+
+        case TMUX_HSPLIT:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b")"%");
+            }
+            return false;
+
+        case TMUX_ZOOM:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b")"z");
+            }
+            return false;
+
+        case TMUX_DETACH:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b")"d");
+            }
+            return false;
+
+        case TMUX_COPY_MODE:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b")SS_TAP(X_LBRACKET));
+            }
+            return false;
+
         case TMUX_LEFT:
             if (record->event.pressed) {
-              SEND_STRING(SS_LCTRL("a")SS_TAP(X_LEFT));
+              SEND_STRING(SS_LCTRL("b")SS_TAP(X_LEFT));
             }
             return false;
+
         case TMUX_RIGHT:
             if (record->event.pressed) {
-              SEND_STRING(SS_LCTRL("a")SS_TAP(X_RIGHT));
+              SEND_STRING(SS_LCTRL("b")SS_TAP(X_RIGHT));
             }
             return false;
 
         case TMUX_DOWN:
             if (record->event.pressed) {
-              SEND_STRING(SS_LCTRL("a")SS_TAP(X_DOWN));
+              SEND_STRING(SS_LCTRL("b")SS_TAP(X_DOWN));
             }
             return false;
 
         case TMUX_UP:
             if (record->event.pressed) {
-              SEND_STRING(SS_LCTRL("a")SS_TAP(X_UP));
+              SEND_STRING(SS_LCTRL("b")SS_TAP(X_UP));
             }
             return false;
 
