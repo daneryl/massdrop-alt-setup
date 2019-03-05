@@ -32,6 +32,7 @@ enum alt_keycodes {
     TMUX_HSPLIT,
     TMUX_VSPLIT,
     TMUX_KILL_PANE,
+    TMUX_CMD_MODE,
 
     TD_QUOTE_GRAVE = 0,
 };
@@ -64,11 +65,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     
     // tmux layout ?
     [2] = LAYOUT(
-        KC_TRNS,        KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, TMUX_HSPLIT,   TMUX_VSPLIT, KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-        KC_TRNS,        KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, KC_TRNS,       KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-        KC_TRNS,        KC_TRNS,    TMUX_SESSIONS,    TMUX_DETACH,    KC_TRNS, KC_TRNS,       TMUX_LEFT,   TMUX_DOWN,    TMUX_UP,      TMUX_RIGHT,     KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
-        KC_TRNS,        TMUX_ZOOM,  TMUX_KILL_PANE,   TMUX_COPY_MODE, KC_TRNS, KC_TRNS,       KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,        KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
-        KC_TRNS,        KC_ESC,     KC_TRNS,                                                  KC_TRNS,                                                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
+        KC_TRNS, KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, TMUX_HSPLIT,   TMUX_VSPLIT, KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+        KC_TRNS, KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, KC_TRNS,       KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+        KC_TRNS, KC_TRNS,    TMUX_SESSIONS,    TMUX_DETACH,    KC_TRNS, KC_TRNS,       TMUX_LEFT,   TMUX_DOWN,    TMUX_UP,      TMUX_RIGHT, TMUX_CMD_MODE,  KC_TRNS,          KC_TRNS, KC_TRNS, \
+        KC_TRNS, TMUX_ZOOM,  TMUX_KILL_PANE,   TMUX_COPY_MODE, KC_TRNS, KC_TRNS,       KC_TRNS,     KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,        KC_TRNS,          KC_TRNS, KC_TRNS, \
+        KC_TRNS, KC_ESC,     KC_TRNS,                                                  KC_TRNS,                                             KC_TRNS,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
     ),
    
     /*
@@ -264,6 +265,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case TMUX_RIGHT:
             if (record->event.pressed) {
               SEND_STRING(SS_LCTRL("b")SS_TAP(X_RIGHT));
+            }
+            return false;
+
+        case TMUX_CMD_MODE:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b")SS_DOWN(X_LSHIFT)SS_TAP(X_SCOLON)SS_UP(X_LSHIFT));
             }
             return false;
 
