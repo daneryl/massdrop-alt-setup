@@ -21,7 +21,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* 
 
 RUN cd / && \
-    git clone https://github.com/qmk/qmk_firmware.git && \
+    git clone --branch 0.6.301 https://github.com/qmk/qmk_firmware.git && \
     mkdir -p qmk_firmware/keyboards/massdrop/alt/keymaps/daneryl && \
 		cd /qmk_firmware && \
 		make git-submodule
