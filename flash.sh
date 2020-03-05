@@ -1,1 +1,1 @@
-./mdloader_mac --first --download .build/massdrop_alt_daneryl.hex --restart
+./mdloader_mac --first --download .build/massdrop_alt_custom.hex --restart
