@@ -29,36 +29,32 @@ enum alt_keycodes {
 
 keymap_config_t keymap_config;
 
+enum {
+    MAC = 0,
+    WINDOWS,
+    TMUX,
+    NAV_MAC,
+    FUNCTION,
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    // mac (main) 
-    [0] = LAYOUT(
-        KC_ESC,         KC_1,    KC_2,        KC_3, KC_4, KC_5, KC_6,          KC_7, KC_8,        KC_9,   KC_0,              KC_MINS,  KC_EQUAL, KC_BSPC, KC_GRV,  \
-        LT(4, KC_TAB),  KC_Q,    LT(3, KC_W), KC_E, KC_R, KC_T, KC_Y,          KC_U, LT(3, KC_I), KC_O,   KC_P,              KC_LBRC,  KC_RBRC,  KC_BSLS, KC_HOME, \
-        LCTL_T(KC_ESC), KC_A,    KC_S,        KC_D, KC_F, KC_G, KC_H,          KC_J, KC_K,        KC_L,   LCTL_T(KC_SCOLON), KC_QUOTE, KC_ENT,   KC_PGUP, \
-        KC_LSPO,        KC_Z,    KC_X,        KC_C, KC_V, KC_B, KC_N,          KC_M, KC_COMM,     KC_DOT, KC_SLSH,           KC_RSPC,            KC_UP,   KC_PGDN, \
-        KC_LCTL,        KC_LALT, KC_LGUI,                       LT(4, KC_SPC),                            KC_RALT,           MO(2),    KC_LEFT,  KC_DOWN, KC_RGHT  \
+    [MAC] = LAYOUT(
+        KC_ESC,         KC_1,    KC_2,           KC_3, KC_4, KC_5, KC_6,          KC_7, KC_8,           KC_9,   KC_0,              KC_MINS,       KC_EQUAL, KC_BSPC, KC_GRV,  \
+        LALT_T(KC_TAB), KC_Q,    LT(TMUX, KC_W), KC_E, KC_R, KC_T, KC_Y,          KC_U, LT(TMUX, KC_I), KC_O,   KC_P,              KC_LBRC,       KC_RBRC,  KC_BSLS, KC_HOME, \
+        LCTL_T(KC_ESC), KC_A,    KC_S,           KC_D, KC_F, KC_G, KC_H,          KC_J, KC_K,           KC_L,   LCTL_T(KC_SCOLON), KC_QUOTE,      KC_ENT,   KC_PGUP, \
+        KC_LSPO,        KC_Z,    KC_X,           KC_C, KC_V, KC_B, KC_N,          KC_M, KC_COMM,        KC_DOT, KC_SLSH,           KC_RSPC,                 KC_UP,   KC_PGDN, \
+        KC_LCTL,        KC_LALT, KC_LGUI,                          LT(NAV_MAC, KC_SPC),                         KC_RALT,           MO(FUNCTION),  KC_LEFT,  KC_DOWN, KC_RGHT  \
     ),
 
-    // Gaming
-    [1] = LAYOUT(
-        KC_ESC,         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_DEL,  \
-        KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME, \
-        LCTL_T(KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP, \
-        KC_LSFT,        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,   KC_PGDN, \
-        KC_LCTL,        KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, MO(2),   KC_LEFT, KC_DOWN, KC_RGHT  \
+    [WINDOWS] = LAYOUT(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+        KC_TRNS, KC_TRNS, KC_W,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_I,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
+        KC_LGUI, KC_TRNS, KC_LCTL,                            KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
     ),
 
-    //FN
-    [2] = LAYOUT(
-        TG(1)  , KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_MUTE, \
-        _______, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END, \
-        _______, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
-        _______, RGB_TOG, _______, _______, _______, MD_BOOT, TG_NKRO, DBG_TOG, _______, _______, _______, _______,          KC_PGUP, KC_VOLD, \
-        _______, _______, _______,                            _______,                            _______, _______, KC_HOME, KC_PGDN, KC_END  \
-    ),
-    
-    //tmux layout 
-    [3] = LAYOUT(
+    [TMUX] = LAYOUT(
         KC_TRNS, KC_TRNS,   KC_TRNS,        KC_TRNS,     KC_TRNS, TMUX_HSPLIT, TMUX_VSPLIT,      KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       KC_TRNS,        KC_TRNS, TMUX_CLEAR, KC_TRNS, \
         KC_TRNS, KC_TRNS,   KC_TRNS,        KC_TRNS,     KC_TRNS, KC_TRNS,     KC_TRNS,          KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       TMUX_COPY_MODE, KC_TRNS, KC_TRNS,    KC_TRNS, \
         KC_TRNS, KC_TRNS,   TMUX_SESSIONS,  TMUX_DETACH, KC_TRNS, KC_TRNS,     TMUX_LEFT,        TMUX_DOWN, TMUX_UP, TMUX_RIGHT, TMUX_CMD_MODE, KC_TRNS,                 KC_TRNS,    KC_TRNS, \
@@ -66,15 +62,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_ESC,    KC_TRNS,                                           KC_TRNS,                                          KC_TRNS,       KC_TRNS,        KC_TRNS, KC_TRNS,    KC_TRNS  \
     ),
 
-    //nav/util/vim-like layout
-    [4] = LAYOUT(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,       KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LALT(KC_LEFT), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
-        KC_TRNS, KC_TRNS, KC_TRNS,                                  KC_TRNS,                             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
+    [NAV_MAC] = LAYOUT(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, LALT(LSFT(KC_LEFT)), KC_TRNS, \
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,             KC_TRNS, \
+        KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, KC_TRNS, KC_TRNS,          KC_TRNS,             KC_TRNS, \
+        KC_TRNS, KC_TRNS, KC_TRNS, LSFT(LGUI(KC_RIGHT)), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,          KC_TRNS,             KC_TRNS, \
+        KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS,                             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,             KC_TRNS  \
     ),
 
+    [FUNCTION] = LAYOUT(
+        TG(WINDOWS), KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_MUTE, \
+        _______,     RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END, \
+        _______,     RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
+        _______,     RGB_TOG, _______, _______, _______, MD_BOOT, TG_NKRO, DBG_TOG, _______, _______, _______, _______,          KC_PGUP, KC_VOLD, \
+        _______,     _______, _______,                            _______,                            _______, _______, KC_HOME, KC_PGDN, KC_END  \
+    ),
+    
     /*
     [X] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
