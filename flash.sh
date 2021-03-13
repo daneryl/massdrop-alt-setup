@@ -1,1 +1,1 @@
-./mdloader_mac --first --download .build/massdrop_alt_custom.hex --restart
+sudo ./mdloader_linux --first --download .build/massdrop_alt_custom.hex --restart
