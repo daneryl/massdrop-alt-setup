@@ -35,6 +35,8 @@ enum alt_keycodes {
     TMUX_CMD_MODE,
     TMUX_CLEAR,
     TMUX_NEXT_WINDOW,
+    TMUX_PREV_WINDOW,
+    TMUX_NEW_WINDOW,
 
     TD_SCOLON = 0,
     TD_EQUAL,
@@ -56,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
         KC_ESC,            KC_1,    KC_2,          KC_3,    KC_4,    KC_5,  KC_6,    KC_7,    KC_8,         KC_9,    KC_0,               KC_MINS,     KC_EQUAL,      KC_BSPC, KC_GRV,  \
         KC_TAB,            KC_Q,    LT(2, KC_W),   KC_E,    KC_R,    KC_T,  KC_Y,    KC_U,    LT(2, KC_I),  KC_O,    KC_P,               KC_LBRC,     KC_RBRC,       KC_BSLS, KC_HOME, \
-        LCTL_T(KC_ESC),    KC_A,    KC_S,          KC_D,    KC_F,    KC_G,  KC_H,    KC_J,    KC_K,         KC_L,    LCTL_T(KC_SCOLON),  KC_QUOTE,    KC_ENT,        KC_PGUP, \
+        LCTL_T(KC_ESC),    KC_A,    KC_S,          KC_D,    KC_F,    KC_G,  KC_H,    KC_J,    KC_K,         KC_L,    KC_SCOLON,          KC_QUOTE,    KC_ENT,        KC_PGUP, \
         KC_LSPO,           KC_Z,    KC_X,          KC_C,    KC_V,    KC_B,  KC_N,    KC_M,    KC_COMM,      KC_DOT,  KC_SLSH,            KC_RSPC,                    KC_UP,   KC_PGDN, \
         KC_LCTL,           KC_LALT, KC_LGUI,                                KC_SPC,                                  KC_RCBR,            MO(1),       KC_LEFT,       KC_DOWN, KC_RGHT  \
     ),
@@ -69,13 +71,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS,                            KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_END  \
     ),
     
-    // tmux layout ?
+    // tmux layout
     [2] = LAYOUT(
-        KC_TRNS, KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, TMUX_HSPLIT,   TMUX_VSPLIT,     KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,        KC_TRNS,              KC_TRNS, TMUX_CLEAR, KC_TRNS, \
-        KC_TRNS, KC_TRNS,    KC_TRNS,          KC_TRNS,        KC_TRNS, KC_TRNS,       KC_TRNS,         KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,        TMUX_COPY_MODE,       KC_TRNS, KC_TRNS,    KC_TRNS, \
-        KC_TRNS, KC_TRNS,    TMUX_SESSIONS,    TMUX_DETACH,    KC_TRNS, KC_TRNS,       TMUX_LEFT,       TMUX_DOWN,    TMUX_UP,      TMUX_RIGHT, TMUX_CMD_MODE,  KC_TRNS,                       KC_TRNS,    KC_TRNS, \
-        KC_TRNS, TMUX_ZOOM,  TMUX_KILL_PANE,   KC_TRNS,        KC_TRNS, KC_TRNS,       TMUX_NEXT_WINDOW,KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,        KC_TRNS,                       KC_TRNS,    KC_TRNS, \
-        KC_TRNS, KC_ESC,     KC_TRNS,                                                  KC_TRNS,                                             KC_TRNS,        KC_TRNS,              KC_TRNS, KC_TRNS,    KC_TRNS  \
+        KC_TRNS, KC_TRNS,    KC_TRNS,          KC_TRNS,         KC_TRNS, TMUX_HSPLIT,   TMUX_VSPLIT,     KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,           KC_TRNS,              KC_TRNS, TMUX_CLEAR, KC_TRNS, \
+        KC_TRNS, KC_TRNS,    KC_TRNS,          KC_TRNS,         KC_TRNS, KC_TRNS,       KC_TRNS,         KC_TRNS,      KC_TRNS,      KC_TRNS,    TMUX_PREV_WINDOW,  TMUX_COPY_MODE,       KC_TRNS, KC_TRNS,    KC_TRNS, \
+        KC_TRNS, KC_TRNS,    TMUX_SESSIONS,    TMUX_DETACH,     KC_TRNS, KC_TRNS,       TMUX_LEFT,       TMUX_DOWN,    TMUX_UP,      TMUX_RIGHT, TMUX_CMD_MODE,     KC_TRNS,                       KC_TRNS,    KC_TRNS, \
+        KC_TRNS, TMUX_ZOOM,  TMUX_KILL_PANE,   TMUX_NEW_WINDOW, KC_TRNS, KC_TRNS,       TMUX_NEXT_WINDOW,KC_TRNS,      KC_TRNS,      KC_TRNS,    KC_TRNS,           KC_TRNS,                       KC_TRNS,    KC_TRNS, \
+        KC_TRNS, KC_ESC,     KC_TRNS,                                                   KC_TRNS,                                                 KC_TRNS,           KC_TRNS,              KC_TRNS, KC_TRNS,    KC_TRNS  \
     ),
    
     /*
@@ -288,10 +290,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
+        case TMUX_NEW_WINDOW:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b"));
+              SEND_STRING("c");
+            }
+            return false;
+
         case TMUX_NEXT_WINDOW:
             if (record->event.pressed) {
               SEND_STRING(SS_LCTRL("b"));
               SEND_STRING("n");
+            }
+            return false;
+
+        case TMUX_PREV_WINDOW:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b"));
+              SEND_STRING("p");
             }
             return false;
 
