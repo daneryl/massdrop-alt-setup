@@ -1,6 +1,8 @@
-FROM bitnami/minideb
+FROM bitnami/minideb:latest
 MAINTAINER daneyl <github.com/daneryl>
 
+
+RUN apt-get clean
 RUN apt-get update
 RUN apt-get install -y sudo
 RUN apt-get install -y build-essential

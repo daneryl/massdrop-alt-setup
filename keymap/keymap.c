@@ -10,6 +10,7 @@ enum alt_keycodes {
     MD_BOOT,               //Restart into bootloader after hold timeout
     //
     TMUX_SESSIONS,
+    TMUX_NEW_WINDOW,
     TMUX_LEFT,
     TMUX_RIGHT,
     TMUX_UP,
@@ -23,6 +24,7 @@ enum alt_keycodes {
     TMUX_CMD_MODE,
     TMUX_CLEAR,
     TMUX_NEXT_WINDOW,
+    TMUX_THUMBS,
 };
 
 #define TG_NKRO MAGIC_TOGGLE_NKRO //Toggle 6KRO / NKRO mode
@@ -49,17 +51,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [GAMING] = LAYOUT(
         LT(FUNCTION, KC_ESC), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
         KC_TAB,               KC_TRNS, KC_W,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_I,    KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-        KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
+        KC_ESC,               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
         KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, \
         KC_LGUI,              KC_TRNS, KC_LCTL,                            KC_SPC,                             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
     ),
 
     [TMUX] = LAYOUT(
-        KC_TRNS, KC_TRNS,   KC_TRNS,        KC_TRNS,     KC_TRNS, TMUX_HSPLIT, TMUX_VSPLIT,      KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       KC_TRNS,        KC_TRNS, TMUX_CLEAR, KC_TRNS, \
-        KC_TRNS, KC_TRNS,   KC_TRNS,        KC_TRNS,     KC_TRNS, KC_TRNS,     KC_TRNS,          KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       TMUX_COPY_MODE, KC_TRNS, KC_TRNS,    KC_TRNS, \
-        KC_TRNS, KC_TRNS,   TMUX_SESSIONS,  TMUX_DETACH, KC_TRNS, KC_TRNS,     TMUX_LEFT,        TMUX_DOWN, TMUX_UP, TMUX_RIGHT, TMUX_CMD_MODE, KC_TRNS,                 KC_TRNS,    KC_TRNS, \
-        KC_TRNS, TMUX_ZOOM, TMUX_KILL_PANE, KC_TRNS,     KC_TRNS, KC_TRNS,     TMUX_NEXT_WINDOW, KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       KC_TRNS,                 KC_TRNS,    KC_TRNS, \
-        KC_TRNS, KC_ESC,    KC_TRNS,                                           KC_TRNS,                                          KC_TRNS,       KC_TRNS,        KC_TRNS, KC_TRNS,    KC_TRNS  \
+        KC_TRNS, KC_TRNS,   KC_TRNS,        KC_TRNS,         KC_TRNS, TMUX_HSPLIT, TMUX_VSPLIT,      KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       KC_TRNS,        KC_TRNS, TMUX_CLEAR, KC_TRNS, \
+        KC_TRNS, KC_TRNS,   KC_TRNS,        KC_TRNS,         KC_TRNS, TMUX_THUMBS, KC_TRNS,          KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       TMUX_COPY_MODE, KC_TRNS, KC_TRNS,    KC_TRNS, \
+        KC_TRNS, KC_TRNS,   TMUX_SESSIONS,  TMUX_DETACH,     KC_TRNS, KC_TRNS,     TMUX_LEFT,        TMUX_DOWN, TMUX_UP, TMUX_RIGHT, TMUX_CMD_MODE, KC_TRNS,                 KC_TRNS,    KC_TRNS, \
+        KC_TRNS, TMUX_ZOOM, TMUX_KILL_PANE, TMUX_NEW_WINDOW, KC_TRNS, KC_TRNS,     TMUX_NEXT_WINDOW, KC_TRNS,   KC_TRNS, KC_TRNS,    KC_TRNS,       KC_TRNS,                 KC_TRNS,    KC_TRNS, \
+        KC_TRNS, KC_ESC,    KC_TRNS,                                               KC_TRNS,                                          KC_TRNS,       KC_TRNS,        KC_TRNS, KC_TRNS,    KC_TRNS  \
     ),
 
     // WIP
@@ -275,6 +277,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
               SEND_STRING(SS_LCTRL("b"));
               SEND_STRING("n");
+            }
+            return false;
+
+        case TMUX_NEW_WINDOW:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b"));
+              SEND_STRING("c");
+            }
+            return false;
+
+        case TMUX_THUMBS:
+            if (record->event.pressed) {
+              SEND_STRING(SS_LCTRL("b"));
+              SEND_STRING("t");
             }
             return false;
 
