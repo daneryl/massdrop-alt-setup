@@ -1,6 +1,6 @@
 # project specific files
-SRC = led_programs.c
-SRC += matrix.c
+SRC = matrix.c
+SRC += config_led.c
 
 #For platform and packs
 ARM_ATSAM = SAMD51J18A
@@ -32,4 +32,8 @@ VIRTSER_ENABLE = no         # USB Serial Driver
 RAW_ENABLE = no             # Raw device
 AUTO_SHIFT_ENABLE = no      # Auto Shift
 
-TAP_DANCE_ENABLE = yes
+# Custom RGB matrix handling
+RGB_MATRIX_ENABLE = custom
+
+## CUSTOM
+RGB_MATRIX_CUSTOM_USER = yes
